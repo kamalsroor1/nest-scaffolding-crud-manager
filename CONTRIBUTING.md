@@ -23,7 +23,7 @@ Every contribution — bug fix, feature, doc improvement — is welcome.
 1. **Fork** the repository on GitHub
 2. **Clone** your fork locally:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/nest-scaffolding-crud-manager.git
+   git clone https://github.com/kamalsroor1/nest-scaffolding-crud-manager.git
    cd nest-scaffolding-crud-manager
    ```
 3. Add the **upstream** remote:
