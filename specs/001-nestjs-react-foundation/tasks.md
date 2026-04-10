@@ -31,11 +31,11 @@ description: "Task list for feature: NestJS + React Project Foundation"
 **Purpose**: Initialize monorepo structure, tooling, and Docker orchestration
 **Constitution refs**: Principles I (code quality), II (modular architecture), VIII (audit log)
 
-- [ ] T001 Initialize pnpm workspace — create `pnpm-workspace.yaml` and root `package.json` with workspace scripts (`dev`, `build`, `lint`, `test`, `format`) at repo root
-- [ ] T002 [P] Create root ESLint config `.eslintrc.js` and Prettier config `.prettierrc` at repo root (shared by backend and frontend)
-- [ ] T003 [P] Create `.gitignore` at repo root (ignore: `node_modules/`, `dist/`, `.env`, `logs/`, `prisma/migrations/*.sql` history lock)
-- [ ] T004 [P] Create `.env.example` at repo root with all 8 variables documented with inline comments (`DATABASE_URL`, `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`, `REDIS_URL`, `PORT`, `NODE_ENV`, `THROTTLE_TTL`, `THROTTLE_LIMIT`)
-- [ ] T005 [P] Verify `history.md` exists at repo root; append `## 2026-04-10T16:56:30+02:00 - Feature 001 Implementation Kickoff` entry with bullet list of phases starting
+- [X] T001 Initialize pnpm workspace — create `pnpm-workspace.yaml` and root `package.json` with workspace scripts (`dev`, `build`, `lint`, `test`, `format`) at repo root
+- [X] T002 [P] Create root ESLint config `.eslintrc.js` and Prettier config `.prettierrc` at repo root (shared by backend and frontend)
+- [X] T003 [P] Create `.gitignore` at repo root (ignore: `node_modules/`, `dist/`, `.env`, `logs/`, `prisma/migrations/*.sql` history lock)
+- [X] T004 [P] Create `.env.example` at repo root with all 8 variables documented with inline comments (`DATABASE_URL`, `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`, `REDIS_URL`, `PORT`, `NODE_ENV`, `THROTTLE_TTL`, `THROTTLE_LIMIT`)
+- [X] T005 [P] Verify `history.md` exists at repo root; append `## 2026-04-10T16:56:30+02:00 - Feature 001 Implementation Kickoff` entry with bullet list of phases starting
 
 ---
 

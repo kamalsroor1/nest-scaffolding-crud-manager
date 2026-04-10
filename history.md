@@ -83,3 +83,16 @@
 - MVP scope: Phase 1 + Phase 2A + Phase 2C + Phase 3 (US1 only) = working API with health checks.
 
 ---
+
+## 2026-04-10T17:03:09+02:00 - Feature 001 Implementation Kickoff
+
+- Started implementation of Sprint 1: NestJS + React Project Foundation.
+- Completed Phase 1 (Setup):
+  - Initialized pnpm workspace with `pnpm-workspace.yaml` and root `package.json`.
+  - Created root ESLint (`.eslintrc.js`) and Prettier (`.prettierrc`) configurations.
+  - Created root `.gitignore` with monorepo patterns.
+  - Created `.env.example` with all 8 required variables documented.
+  - Verified `history.md` and added kickoff audit entry.
+- Verified/Created ignore files: `.dockerignore`, `.eslintignore`, `.prettierignore`.
+
+---
