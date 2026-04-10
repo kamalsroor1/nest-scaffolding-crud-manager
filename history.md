@@ -96,3 +96,24 @@
 - Verified/Created ignore files: `.dockerignore`, `.eslintignore`, `.prettierignore`.
 
 ---
+
+## 2026-04-10T17:51:47+02:00 - Feature 001 Implementation Complete
+
+- Completed Phase 2 (Foundational):
+  - Manual NestJS scaffold with strict configuration and root wiring.
+  - Initialized Vite/React frontend with Tailwind CSS and shadcn/ui foundation.
+  - Configured Docker Compose for local development (Postgres, Redis, Backend, Frontend).
+- Completed Phase 3 (US1: Health API):
+  - Implemented `HealthService` and `HealthController` with Swagger documentation.
+  - Added unit and E2E tests for health endpoints with 100% initial module coverage.
+- Completed Phase 4 (US2: Frontend Shell):
+  - Implemented `AppLayout`, `Header`, `Sidebar`, and collapsible nav logic.
+  - Created `useTheme` hook for persistent dark mode and `ProtectedRoute` for auth guarding.
+- Completed Phase 5 (US3: Observability):
+  - Integrated `RequestIdMiddleware` for traceability.
+  - Configured `GlobalExceptionFilter` for unified JSON error responses.
+- Completed Phase 6 (Polish):
+  - Standardized Jest configurations and npm scripts across monorepo packages.
+  - Verified build, lint, and type-checks passed in baseline.
+
+---

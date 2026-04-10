@@ -148,10 +148,10 @@ description: "Task list for feature: NestJS + React Project Foundation"
 
 ### Implementation for User Story 3
 
-- [ ] T054 [US3] Create `backend/src/common/middleware/request-id.middleware.ts` — verify it's complete (task T012 created the file); write unit test `backend/src/common/middleware/request-id.middleware.spec.ts` — mock `req`, `res`, `next`; assert `req['requestId']` is a non-empty string; assert `res.setHeader('X-Request-ID', ...)` called
-- [ ] T055 [US3] Create `backend/src/common/filters/global-exception.filter.spec.ts` — unit test for `GlobalExceptionFilter`: test HttpException → correct statusCode; test `P2002` Prisma error → 409; test `P2025` → 404; test generic Error → 500; test stack not exposed when `NODE_ENV=production`; test `requestId` field present in response
-- [ ] T056 [US3] Create `backend/src/common/interceptors/response.interceptor.spec.ts` — unit test for `ResponseInterceptor`: mock `ExecutionContext` and `CallHandler`; assert output wraps in `{ success: true, statusCode, message, data }` envelope
-- [ ] T057 [P] [US3] Update `frontend/src/lib/axios.ts` — verify response error interceptor is complete (task T026); add `toast.error(error.response?.data?.message ?? 'An error occurred')` call inside the 401 handler before redirect; ensure non-401 errors also call `toast.error`; add JSDoc update
+- [X] T054 [US3] Create `backend/src/common/middleware/request-id.middleware.ts` — verify it's complete (task T012 created the file); write unit test `backend/src/common/middleware/request-id.middleware.spec.ts` — mock `req`, `res`, `next`; assert `req['requestId']` is a non-empty string; assert `res.setHeader('X-Request-ID', ...)` called
+- [X] T055 [US3] Create `backend/src/common/filters/global-exception.filter.spec.ts` — unit test for `GlobalExceptionFilter`: test HttpException → correct statusCode; test `P2002` Prisma error → 409; test `P2025` → 404; test generic Error → 500; test stack not exposed when `NODE_ENV=production`; test `requestId` field present in response
+- [X] T056 [US3] Create `backend/src/common/interceptors/response.interceptor.spec.ts` — unit test for `ResponseInterceptor`: mock `ExecutionContext` and `CallHandler`; assert output wraps in `{ success: true, statusCode, message, data }` envelope
+- [X] T057 [P] [US3] Update `frontend/src/lib/axios.ts` — verify response error interceptor is complete (task T026); add `toast.error(error.response?.data?.message ?? 'An error occurred')` call inside the 401 handler before redirect; ensure non-401 errors also call `toast.error`; add JSDoc update
 
 **Checkpoint**: Hit any non-existent route → backend logs show `{ requestId, statusCode, path, message }` in JSON. Frontend shows error toast for API failures.
 
