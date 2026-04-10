@@ -112,6 +112,7 @@ The following NFRs apply to every feature by default per the project constitutio
 | NFR-08 | Aggregate code coverage MUST remain ≥ 70% lines and branches after this feature | Principle III |
 | NFR-09 | All TypeScript files MUST pass ESLint + Prettier with zero suppressions | Principle I |
 | NFR-10 | Generated pages MUST use the shared `DataTable` and `Form` components | Principle VII |
+| NFR-11 | `history.md` MUST exist at the repo root; every implementation action for this feature MUST be appended to it in the mandated timestamped format | Principle VIII |
 
 ### Key Entities *(include if feature involves data)*
 

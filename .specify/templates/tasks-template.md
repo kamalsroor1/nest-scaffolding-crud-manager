@@ -53,6 +53,7 @@ description: "Task list template for feature implementation"
 - [ ] T002 [P] Configure ESLint + Prettier — ensure `tsconfig.json` has `strict: true` and no `any` suppressions exist
 - [ ] T003 [P] Register new module in `AppModule` using append-only import (do not modify existing imports)
 - [ ] T004 [P] Add JSDoc stubs to all public methods (controller handlers, service methods, repository methods)
+- [ ] T004b Verify `history.md` exists at the repository root; create it if absent and append the feature kickoff entry in the format: `## YYYY-MM-DDTHH:MM:SS+TZ - [Feature Name] — Kickoff`
 
 ---
 

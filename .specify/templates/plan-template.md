@@ -31,7 +31,7 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-Verify the following gates against `.specify/memory/constitution.md` (v1.0.0):
+Verify the following gates against `.specify/memory/constitution.md` (v1.1.0):
 
 | # | Principle | Gate Question | ✅ / ⚠ / ❌ |
 |---|-----------|--------------|------------|
@@ -42,6 +42,7 @@ Verify the following gates against `.specify/memory/constitution.md` (v1.0.0):
 | V | Security | Does the feature require RBAC guards? Are all public endpoints rate-limited? Does any delete operation use soft delete? | |
 | VI | Frontend Standards | Do generated/new pages use the shared `DataTable` and `Form` components? Are protected routes guarded by permission check? Are toasts used for all feedback? | |
 | VII | Generator Parity | If a Generator template is modified, does the rendered output match handwritten module patterns? Are all Swagger decorators included? Is AppModule registration append-only? | |
+| VIII | Agent Workflow & Tracking | Does `history.md` exist at the repo root? Will every action taken during this feature's implementation be appended to it in the correct timestamped format? | |
 
 > **Complexity Tracking required** if any gate is ❌ — document justification below.
 
