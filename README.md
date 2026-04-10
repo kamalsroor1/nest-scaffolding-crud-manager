@@ -88,8 +88,8 @@ Generates in seconds:
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/nest-scaffolding-crud-manger.git
-cd nest-scaffolding-crud-manger
+git clone https://github.com/kamalsroor1/nest-scaffolding-crud-manager.git
+cd nest-scaffolding-crud-manager
 ```
 
 ### 2. Set up environment variables
@@ -214,7 +214,7 @@ npm run start:dev
 ## 📁 Project Structure
 
 ```
-nest-scaffolding-crud-manger/
+nest-scaffolding-crud-manager/
 ├── backend/                    # NestJS API
 │   ├── src/
 │   │   ├── common/             # Guards, Filters, Interceptors, Decorators
