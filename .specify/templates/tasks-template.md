@@ -46,30 +46,35 @@ description: "Task list template for feature implementation"
 
 ## Phase 1: Setup (Shared Infrastructure)
 
-**Purpose**: Project initialization and basic structure
+**Purpose**: Project initialization and NestJS module scaffolding  
+**Constitution refs**: Principles I (code quality), II (modular architecture)
 
-- [ ] T001 Create project structure per implementation plan
-- [ ] T002 Initialize [language] project with [framework] dependencies
-- [ ] T003 [P] Configure linting and formatting tools
+- [ ] T001 Create NestJS feature module skeleton (`module`, `controller`, `service`, `repository`, `dto/`, `entities/`) per `plan.md` structure
+- [ ] T002 [P] Configure ESLint + Prettier — ensure `tsconfig.json` has `strict: true` and no `any` suppressions exist
+- [ ] T003 [P] Register new module in `AppModule` using append-only import (do not modify existing imports)
+- [ ] T004 [P] Add JSDoc stubs to all public methods (controller handlers, service methods, repository methods)
 
 ---
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 
-**Purpose**: Core infrastructure that MUST be complete before ANY user story can be implemented
+**Purpose**: Core NestJS infrastructure required before any user story can be built  
+**Constitution refs**: Principles II–V (architecture, testing, API contract, security)
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-Examples of foundational tasks (adjust based on your project):
+- [ ] T005 Define Prisma schema for all entities in this feature (fields, relations, `deletedAt DateTime?` soft-delete column)
+- [ ] T006 Run `prisma migrate dev` and verify migration succeeds cleanly
+- [ ] T007 [P] Implement Repository class — Prisma calls only inside repository; no raw `prisma.*` in Service
+- [ ] T008 [P] Define all DTOs (`Create[Entity]Dto`, `Update[Entity]Dto`, `[Entity]ResponseDto`) with `class-validator` decorators
+- [ ] T009 Verify `GlobalValidationPipe` is registered in `main.ts` with `{ whitelist: true, forbidNonWhitelisted: true, transform: true }`
+- [ ] T010 [P] Verify `ThrottlerGuard` is applied globally or add `@Throttle()` to all public endpoints in this feature
+- [ ] T011 [P] Add `@ApiBearerAuth()` + `@ApiTags('[Feature]')` to controller; add `@ApiOperation` + `@ApiResponse` to every handler
+- [ ] T012 Apply RBAC guard with `resource:action` permissions to every handler (e.g., `@Permissions('products:read')`)
+- [ ] T013 Ensure all success responses use the global `ResponseInterceptor` envelope `{ success, statusCode, message, data, meta }`
+- [ ] T014 Ensure all error responses use the global `ExceptionFilter` envelope `{ success, statusCode, message, errors[], timestamp, path }`
 
-- [ ] T004 Setup database schema and migrations framework
-- [ ] T005 [P] Implement authentication/authorization framework
-- [ ] T006 [P] Setup API routing and middleware structure
-- [ ] T007 Create base models/entities that all stories depend on
-- [ ] T008 Configure error handling and logging infrastructure
-- [ ] T009 Setup environment configuration management
-
-**Checkpoint**: Foundation ready - user story implementation can now begin in parallel
+**Checkpoint**: Foundation ready — user story implementation can now begin in parallel
 
 ---
 

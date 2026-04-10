@@ -36,10 +36,15 @@ FRONTEND:
 - Tailwind CSS + shadcn/ui components
 - Axios with interceptors for token refresh
 - Protected routes based on permissions
-- Toast notifications for all user actionsconstitution 
+- Toast notifications for all user actions
 
 GENERATOR STANDARDS:
 - Generated code must follow identical patterns to handwritten code
 - All templates must include Swagger decorators
 - Auto-registration in AppModule must not break existing modules
 - Generated frontend pages must use the same DataTable and Form components
+
+AGENT WORKFLOW & TRACKING:
+- Maintain a file named 'history.md' in the root directory.
+- EVERY TIME you implement a feature, modify a file, run a command, or complete a task, you MUST append a brief summary of what you did to 'history.md'.
+- Use the format: `## [Date/Time] - [Task/Spec Name]` followed by a bulleted list of changes.

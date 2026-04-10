@@ -85,7 +85,7 @@
 ### Functional Requirements
 
 - **FR-001**: System MUST [specific capability, e.g., "allow users to create accounts"]
-- **FR-002**: System MUST [specific capability, e.g., "validate email addresses"]  
+- **FR-002**: System MUST [specific capability, e.g., "validate email addresses"]
 - **FR-003**: Users MUST be able to [key interaction, e.g., "reset their password"]
 - **FR-004**: System MUST [data requirement, e.g., "persist user preferences"]
 - **FR-005**: System MUST [behavior, e.g., "log all security events"]
@@ -94,6 +94,24 @@
 
 - **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
 - **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
+
+### Non-Functional Requirements *(constitution-mandated — verify, do not remove)*
+
+The following NFRs apply to every feature by default per the project constitution
+(`.specify/memory/constitution.md` v1.0.0). Override only with documented justification.
+
+| NFR | Requirement | Constitution Ref |
+|-----|-------------|-----------------|
+| NFR-01 | All endpoints MUST be prefixed `/api/v1/` and return the unified success/error envelope | Principle IV |
+| NFR-02 | Every endpoint MUST have Swagger decorators (`@ApiTags`, `@ApiOperation`, `@ApiResponse`) | Principle IV |
+| NFR-03 | Access tokens expire in 15 min; Refresh tokens expire in 7 days | Principle V |
+| NFR-04 | All delete operations MUST be soft deletes (`deletedAt` timestamp); no hard deletes | Principle V |
+| NFR-05 | Public endpoints MUST enforce rate limiting via Throttler guard | Principle V |
+| NFR-06 | RBAC guards using `resource:action` format MUST be applied at handler level | Principle V |
+| NFR-07 | Unit tests required for every Service method; integration tests for every Controller endpoint | Principle III |
+| NFR-08 | Aggregate code coverage MUST remain ≥ 70% lines and branches after this feature | Principle III |
+| NFR-09 | All TypeScript files MUST pass ESLint + Prettier with zero suppressions | Principle I |
+| NFR-10 | Generated pages MUST use the shared `DataTable` and `Form` components | Principle VII |
 
 ### Key Entities *(include if feature involves data)*
 

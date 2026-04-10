@@ -1,27 +1,27 @@
 <!--
   SYNC IMPACT REPORT
   ==================
-  Version change: [TEMPLATE] → 1.0.0
-  This is the initial ratification of the NestJS Scaffolding Dashboard Constitution.
+  Version change: 1.0.0 → 1.1.0 (MINOR — new principle added)
+  Last Amended: 2026-04-10
+
+  Amendment: Added Principle VIII — Agent Workflow & Tracking
+  - Mandates a root-level `history.md` audit log maintained by any agent or developer.
+  - Every implementation action, file modification, command execution, or task
+    completion MUST be appended to history.md with a timestamped section header
+    and a bulleted summary of changes.
+
+  Modified principles: none (existing I–VII unchanged)
 
   Added sections:
-  - I. Code Quality (TypeScript strictness, ESLint/Prettier, SOLID, JSDoc)
-  - II. Modular Architecture (NestJS modules, Repository pattern, DTOs, DI)
-  - III. Testing Discipline (Unit / Integration / E2E, 70% coverage CI gate)
-  - IV. API Contract (prefix, unified response/error envelopes, Swagger)
-  - V. Security (JWT tokens, RBAC, validation pipe, rate limiting, soft delete)
-  - VI. Frontend Standards (React/TS/Vite, Tailwind/shadcn, Axios interceptors,
-        protected routes, toasts)
-  - VII. Generator Parity (generated code identical to handwritten code, Swagger
-        decorators in templates, safe AppModule registration)
-  - Additional Constraints section (tech stack)
-  - Quality Gates section (CI gates and review requirements)
-  - Governance section
+  - VIII. Agent Workflow & Tracking (NON-NEGOTIABLE)
 
   Templates requiring updates:
-  - .specify/templates/plan-template.md  ✅ updated — Constitution Check gates added
-  - .specify/templates/spec-template.md  ✅ updated — security + API sections noted
-  - .specify/templates/tasks-template.md ✅ updated — test discipline and Swagger tasks noted
+  - .specify/templates/plan-template.md  ✅ updated — Gate VIII added to Constitution Check
+  - .specify/templates/spec-template.md  ✅ previously updated (v1.0.0, no change needed)
+  - .specify/templates/tasks-template.md ✅ previously updated (v1.0.0, no change needed)
+
+  New files created:
+  - history.md (root) — initial audit log entry created by this amendment run
 
   Follow-up TODOs:
   - TODO(RATIFICATION_DATE): Confirm the precise date the team formally adopted this
@@ -171,6 +171,33 @@ as handwritten code:
 **Rationale**: If generator output diverges from handwritten patterns, the scaffold
 loses its value proposition and technical debt accumulates immediately.
 
+### VIII. Agent Workflow & Tracking (NON-NEGOTIABLE)
+
+Every agent (AI assistant, automated script, or developer acting in an agent capacity)
+MUST maintain a persistent audit trail of all actions taken in this project:
+
+- A file named **`history.md`** MUST exist at the repository root at all times.
+  It is created on first action if absent; it is NEVER deleted or truncated.
+- **Every action** — feature implementation, file modification, command execution,
+  task completion, or constitution amendment — MUST be appended to `history.md`
+  immediately after the action completes. Pre-action logging is not acceptable.
+- Each entry MUST follow this exact format:
+  ```markdown
+  ## YYYY-MM-DDTHH:MM:SS+TZ - [Task/Spec Name]
+
+  - [Concise bullet describing what was done]
+  - [File(s) created or modified, with relative path]
+  - [Commands run, with exit codes if relevant]
+  ```
+- Entries MUST be appended — never edited or removed after creation. The file
+  serves as an immutable audit log.
+- `history.md` MUST be committed alongside the changes it describes; it MUST NOT
+  be added to `.gitignore`.
+
+**Rationale**: An agent-maintained audit trail is essential for debugging, onboarding,
+reviewing automated changes, and reconstructing the sequence of events when things go
+wrong. Without it, automated modifications become opaque and unauditable.
+
 ## Additional Constraints
 
 ### Technology Stack
@@ -202,6 +229,8 @@ Every pull request MUST pass the following automated gates before merge is permi
 3. **Unit tests**: `jest --coverage` with `≥70%` lines and branches.
 4. **Build**: `nest build` (backend) and `vite build` (frontend) succeed without errors.
 5. **E2E**: Auth and CRUD Generator E2E test suites pass cleanly.
+6. **Audit log**: `history.md` exists at the repository root and contains an entry
+   for every task in the current branch's commit range.
 
 ### Code Review Requirements
 
@@ -209,6 +238,7 @@ Every pull request MUST pass the following automated gates before merge is permi
   reviewer's approval, not only the author's.
 - Generated code changes (template modifications) MUST include a sample of the
   rendered output in the PR description.
+- Every PR MUST include a corresponding `history.md` append confirming what was done.
 
 ## Governance
 
@@ -236,4 +266,4 @@ takes precedence over any team member's individual preference.
 and `.specify/templates/` for document templates that must remain in sync with this
 constitution.
 
-**Version**: 1.0.0 | **Ratified**: 2026-04-10 | **Last Amended**: 2026-04-10
+**Version**: 1.1.0 | **Ratified**: 2026-04-10 | **Last Amended**: 2026-04-10
