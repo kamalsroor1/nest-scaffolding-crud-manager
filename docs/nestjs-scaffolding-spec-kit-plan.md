@@ -1134,3 +1134,405 @@ v0.4.0 ← بعد Spec 4: File upload + Audit log شغالين
 v1.0.0 ← بعد Spec 5: CRUD Generator شغال ✨ (ده الـ milestone الأهم)
 v1.0.0-stable ← بعد Spec 6: Tests + Docs + GitHub Release
 ```
+# 📝 SPEC 7: Advanced Dynamic Settings System
+ 
+أضفه لملف الخطة الأساسي كـ spec جديدة بعد Spec 6.
+ 
+---
+ 
+## الـ Prompt للـ `/speckit.specify`:
+ 
+```
+/speckit.specify Build an Advanced Dynamic Settings System for the NestJS Scaffolding Dashboard.
+ 
+WHAT WE'RE BUILDING:
+A two-layer settings system:
+1. **System Settings** — global configuration managed by admins only, stored in the database, cached in Redis.
+2. **User Preferences** — per-user personal settings stored per user record, editable by the user themselves.
+ 
+The system must be fully dynamic: adding a new setting group or a new setting key requires ZERO code changes — only a new database record or seed entry.
+ 
+---
+ 
+## CORE CONCEPT — The Data Model
+ 
+### Layer 1: System Settings (Admin-only)
+ 
+SettingGroup (Prisma):
+- id: UUID
+- key: String (unique, snake_case, e.g. "email_settings", "security_settings")
+- label: String (display name, e.g. "Email Configuration")
+- description: String?
+- icon: String? (lucide icon name, e.g. "Mail", "Shield")
+- order: Int (controls display order in the UI sidebar)
+- isPublic: Boolean (if true, non-admin authenticated users can READ but not WRITE — useful for app branding)
+- createdAt, updatedAt
+ 
+Setting (Prisma):
+- id: UUID
+- groupId: UUID (relation to SettingGroup)
+- key: String (unique within group, snake_case, e.g. "smtp_host", "smtp_port")
+- fullKey: String (computed unique: "group_key.setting_key", e.g. "email_settings.smtp_host")
+- label: String (display name)
+- description: String? (help text shown below the field)
+- type: Enum → STRING | NUMBER | BOOLEAN | SELECT | JSON | SECRET
+- value: String (all values stored as string, parsed by type on read)
+- defaultValue: String? (fallback if value is null)
+- options: Json? (for SELECT type: [{ label: "Option A", value: "a" }, ...])
+- validation: Json? (optional validation rules: { min, max, pattern, required })
+- isRequired: Boolean (default: false)
+- isReadOnly: Boolean (if true, shown in UI but cannot be edited — for display purposes)
+- order: Int (display order within the group)
+- createdAt, updatedAt
+ 
+### Layer 2: User Preferences (Per-user)
+ 
+UserPreferenceGroup (Prisma):
+- id: UUID
+- key: String (unique, e.g. "notifications", "appearance", "dashboard")
+- label: String
+- description: String?
+- icon: String?
+- order: Int
+ 
+UserPreference (Prisma):
+- id: UUID
+- groupId: UUID (relation to UserPreferenceGroup)
+- key: String (unique within group)
+- fullKey: String (e.g. "appearance.theme", "notifications.email_alerts")
+- label: String
+- description: String?
+- type: Enum → STRING | NUMBER | BOOLEAN | SELECT | JSON
+- defaultValue: String?
+- options: Json? (for SELECT type)
+- order: Int
+ 
+UserPreferenceValue (Prisma):
+- id: UUID
+- userId: UUID (relation to User)
+- preferenceId: UUID (relation to UserPreference)
+- value: String
+- createdAt, updatedAt
+- @@unique([userId, preferenceId])
+ 
+---
+ 
+## SEEDED DATA (the starting groups and settings)
+ 
+### System Settings Groups & Keys:
+ 
+**Group: "general" — General Settings** (order: 1, isPublic: true)
+- app_name: STRING, default "My App", label "Application Name"
+- app_logo_url: STRING?, label "Logo URL"
+- app_url: STRING, label "Application URL"
+- maintenance_mode: BOOLEAN, default "false", label "Maintenance Mode"
+- maintenance_message: STRING?, label "Maintenance Message"
+ 
+**Group: "email_settings" — Email Configuration** (order: 2, isPublic: false)
+- smtp_host: STRING, label "SMTP Host"
+- smtp_port: NUMBER, default "587", label "SMTP Port"
+- smtp_user: STRING, label "SMTP Username"
+- smtp_password: SECRET, label "SMTP Password"
+- smtp_from_name: STRING, label "From Name"
+- smtp_from_email: STRING, label "From Email"
+- smtp_secure: BOOLEAN, default "false", label "Use TLS"
+ 
+**Group: "security_settings" — Security** (order: 3, isPublic: false)
+- session_lifetime: NUMBER, default "900", label "Access Token Lifetime (seconds)"
+- refresh_token_lifetime: NUMBER, default "604800", label "Refresh Token Lifetime (seconds)"
+- max_login_attempts: NUMBER, default "5", label "Max Failed Login Attempts"
+- lockout_duration: NUMBER, default "900", label "Account Lockout Duration (seconds)"
+- require_email_verification: BOOLEAN, default "true", label "Require Email Verification"
+- allowed_origins: JSON, default "[]", label "Allowed CORS Origins"
+ 
+**Group: "storage_settings" — File Storage** (order: 4, isPublic: false)
+- storage_provider: SELECT, options [local, s3], default "local", label "Storage Provider"
+- max_file_size_mb: NUMBER, default "10", label "Max File Size (MB)"
+- allowed_mime_types: JSON, default '["image/jpeg","image/png","application/pdf"]', label "Allowed File Types"
+- s3_bucket: STRING?, label "S3 Bucket Name"
+- s3_region: STRING?, label "S3 Region"
+- s3_access_key: SECRET?, label "S3 Access Key"
+- s3_secret_key: SECRET?, label "S3 Secret Key"
+ 
+**Group: "notification_settings" — Notifications** (order: 5, isPublic: false)
+- enable_email_notifications: BOOLEAN, default "true", label "Enable Email Notifications"
+- email_on_new_user: BOOLEAN, default "true", label "Email admin on new registration"
+- email_on_login: BOOLEAN, default "false", label "Email user on new login"
+ 
+### User Preference Groups & Keys:
+ 
+**Group: "appearance" — Appearance** (order: 1)
+- theme: SELECT, options [light, dark, system], default "system", label "Theme"
+- language: SELECT, options [en, ar, fr], default "en", label "Language"
+- sidebar_collapsed: BOOLEAN, default "false", label "Collapse Sidebar by Default"
+- items_per_page: SELECT, options [10, 25, 50, 100], default "10", label "Default Items Per Page"
+ 
+**Group: "notifications" — Notifications** (order: 2)
+- email_alerts: BOOLEAN, default "true", label "Email Alerts"
+- browser_notifications: BOOLEAN, default "false", label "Browser Notifications"
+- alert_on_login: BOOLEAN, default "false", label "Alert me on new login"
+ 
+**Group: "dashboard" — Dashboard** (order: 3)
+- default_view: SELECT, options [grid, list], default "list", label "Default View"
+- show_welcome_message: BOOLEAN, default "true", label "Show Welcome Message"
+ 
+---
+ 
+## BACKEND ENDPOINTS
+ 
+### System Settings (Admin only unless isPublic):
+ 
+GET /api/v1/settings
+- Returns all groups with their settings (values included)
+- Admins see ALL groups
+- Authenticated non-admins see only isPublic groups
+- SECRET type values returned as "••••••••" (masked) unless admin requests with ?unmask=true
+ 
+GET /api/v1/settings/:groupKey
+- Returns single group with its settings
+ 
+PATCH /api/v1/settings/:groupKey
+- Permission: settings:update (admin only)
+- Body: { key1: value1, key2: value2, ... } (flat key-value map for that group)
+- Validates each value against its type and validation rules
+- For SECRET type: encrypts before storing (AES-256-GCM)
+- Updates cache after save
+- Returns updated group with new values
+ 
+POST /api/v1/settings/groups
+- Permission: settings:manage (super-admin)
+- Body: { key, label, description?, icon?, order?, isPublic? }
+- Creates a new dynamic group
+ 
+POST /api/v1/settings/groups/:groupKey/settings
+- Permission: settings:manage (super-admin)
+- Body: { key, label, type, defaultValue?, options?, description?, validation?, isRequired?, order? }
+- Adds a new setting definition to a group
+ 
+GET /api/v1/settings/value/:fullKey
+- Returns a single setting value (e.g. GET /api/v1/settings/value/email_settings.smtp_host)
+- Useful for internal service use
+ 
+### SettingsService (internal use):
+- get(fullKey: string): Promise<string | null> — get single value
+- getGroup(groupKey: string): Promise<Record<string, any>> — get all values in group as typed object
+- getTyped<T>(fullKey: string): Promise<T> — get value parsed to correct TypeScript type
+- set(fullKey: string, value: any): Promise<void> — update single value
+- All gets check Redis cache first (TTL: 5 minutes), falls back to DB, re-caches on miss
+ 
+Cache invalidation:
+- On any PATCH to a group → delete all keys for that group from Redis
+- Cache key format: "settings:{groupKey}:{settingKey}"
+ 
+Encryption for SECRET type:
+- AES-256-GCM encryption using SETTINGS_ENCRYPTION_KEY env variable
+- Encrypted values stored with prefix "enc:" in DB
+- Decrypted only when read via API (with proper permissions) or internally by SettingsService
+ 
+### User Preferences:
+ 
+GET /api/v1/users/me/preferences
+- Returns all preference groups with current user's values (or defaults if not set)
+ 
+PATCH /api/v1/users/me/preferences/:groupKey
+- Body: { key1: value1, key2: value2 }
+- Upserts UserPreferenceValue records for this user
+ 
+GET /api/v1/users/me/preferences/value/:fullKey
+- Returns single preference value for current user
+ 
+---
+ 
+## FRONTEND — Settings Page (Admin)
+ 
+Route: /dashboard/settings
+Permission: settings:read (admin only)
+ 
+Layout:
+- Left sidebar: scrollable list of setting groups with icons and labels
+  - Active group highlighted
+  - Groups loaded dynamically from API (not hardcoded)
+- Right panel: the settings form for the selected group
+ 
+Settings Form (per group):
+- Renders fields DYNAMICALLY based on the `type` of each setting:
+  - STRING → <Input type="text" />
+  - NUMBER → <Input type="number" /> with min/max from validation
+  - BOOLEAN → <Switch /> with label on the right
+  - SELECT → <Select /> dropdown with options from the `options` field
+  - JSON → <Textarea /> with JSON syntax validation + pretty-print button
+  - SECRET → <Input type="password" /> with show/hide toggle + "Value is encrypted" badge
+ 
+- Each field shows:
+  - label (bold)
+  - description below as help text (muted color)
+  - Required badge if isRequired
+  - Read-only state if isReadOnly
+ 
+- "Save Changes" button at bottom — saves the whole group at once (not field by field)
+- "Reset to Defaults" button — confirmation dialog before resetting
+- Unsaved changes indicator (asterisk in group name + warning before leaving page)
+- Toast notification on success/error
+ 
+## FRONTEND — User Preferences Page
+ 
+Route: /dashboard/profile/preferences (tab in profile page)
+Available to all authenticated users.
+ 
+Same layout as admin settings but:
+- Shows UserPreferenceGroups instead of SettingGroups
+- Saves to /api/v1/users/me/preferences/:groupKey
+- Changes apply immediately (e.g., theme change takes effect without page reload)
+ 
+---
+ 
+## DYNAMIC EXTENSIBILITY
+ 
+HOW TO ADD A NEW SETTING GROUP IN THE FUTURE:
+1. Add a seed record to SettingGroup table (or run: POST /api/v1/settings/groups)
+2. Add Setting records for that group (or run: POST /api/v1/settings/groups/:key/settings)
+3. Zero code changes required — the frontend renders it automatically
+ 
+HOW TO USE SETTINGS INSIDE ANY SERVICE:
+\`\`\`typescript
+// In any NestJS service, inject SettingsService:
+constructor(private settingsService: SettingsService) {}
+ 
+// Get a typed value:
+const smtpHost = await this.settingsService.get('email_settings.smtp_host');
+const maxFileSize = await this.settingsService.getTyped<number>('storage_settings.max_file_size_mb');
+const maintenanceMode = await this.settingsService.getTyped<boolean>('general.maintenance_mode');
+\`\`\`
+ 
+---
+ 
+## NEW PERMISSIONS TO ADD TO SEED:
+- settings:read (view settings)
+- settings:update (edit setting values)
+- settings:manage (create/delete groups and definitions — super-admin only)
+ 
+Add "settings:read" and "settings:update" to the admin role.
+ 
+---
+ 
+## NEW ENV VARIABLE:
+SETTINGS_ENCRYPTION_KEY=32-byte-hex-string-for-aes-256
+ 
+Add to .env.example with documentation.
+```
+ 
+---
+ 
+## أمر الـ Plan:
+ 
+```
+/speckit.plan Same core tech stack. Additional packages:
+- Backend: node-forge OR crypto (built-in Node.js) for AES-256-GCM encryption of SECRET fields
+- No new frontend packages needed — uses existing shadcn/ui components (Switch, Select, Input, Textarea, Tabs)
+```
+ 
+---
+ 
+## أوامر Tasks و Implement:
+ 
+```
+/speckit.tasks
+```
+ 
+```
+/speckit.implement
+```
+ 
+---
+ 
+## ✅ Acceptance Criteria للـ Spec 7:
+ 
+**Backend:**
+- [ ] `GET /api/v1/settings` بيرجع كل الـ groups مع values صح
+- [ ] `PATCH /api/v1/settings/general` بيحدث الـ values ويتخزن في الـ DB
+- [ ] SECRET fields بتتخزن مشفرة في الـ DB (`enc:...` prefix)
+- [ ] SECRET fields بتظهر masked في الـ API response (`••••••••`)
+- [ ] Cache شغال: نفس الـ request مرتين — التانية من Redis مش DB
+- [ ] Cache بيتمسح بعد أي PATCH لأي group
+- [ ] User preferences بتتخزن per-user صح
+- [ ] إضافة group جديد عن طريق `POST /api/v1/settings/groups` من غير code changes
+ 
+**Frontend:**
+- [ ] Settings page بتلود الـ groups ديناميكياً من الـ API (مش hardcoded)
+- [ ] كل نوع field بيتrender صح: text, number, switch, dropdown, textarea, password
+- [ ] "Unsaved changes" indicator بيظهر لو في تعديلات مش محفوظة
+- [ ] Theme preference بتتطبق فوراً على الـ UI من غير reload
+- [ ] Non-admin مايقدرش يوصل لـ /dashboard/settings (403)
+- [ ] Non-admin يقدر يعدل preferences بتاعته فقط
+ 
+---
+ 
+## 🗂️ هيكل الملفات المتوقع
+ 
+```
+src/modules/settings/
+├── settings.module.ts
+├── settings.controller.ts       ← System settings CRUD
+├── settings.service.ts          ← Core logic + cache + encryption
+├── settings.seed.ts             ← Initial groups + keys seed data
+├── dto/
+│   ├── update-setting-group.dto.ts
+│   ├── create-group.dto.ts
+│   └── create-setting-definition.dto.ts
+└── helpers/
+    ├── settings-encryption.helper.ts   ← AES-256-GCM encrypt/decrypt
+    └── settings-type-parser.helper.ts  ← Parse string → correct TS type
+ 
+src/modules/user-preferences/
+├── user-preferences.module.ts
+├── user-preferences.controller.ts
+├── user-preferences.service.ts
+├── user-preferences.seed.ts
+└── dto/
+    └── update-preferences.dto.ts
+ 
+frontend/src/pages/settings/
+├── SettingsPage.tsx             ← Admin settings page
+├── components/
+│   ├── SettingsGroupSidebar.tsx ← Dynamic left sidebar
+│   ├── SettingsForm.tsx         ← Dynamic form renderer
+│   └── fields/
+│       ├── StringField.tsx
+│       ├── NumberField.tsx
+│       ├── BooleanField.tsx
+│       ├── SelectField.tsx
+│       ├── JsonField.tsx
+│       └── SecretField.tsx
+ 
+frontend/src/pages/profile/
+└── PreferencesTab.tsx           ← User preferences tab (reuses same field components)
+```
+ 
+---
+ 
+## 💡 مثال على الـ Dynamism في الـ Frontend
+ 
+الـ `SettingsForm` بيعمل loop على الـ settings في الـ group ويـrender الـ component الصح:
+ 
+```tsx
+// هذا الـ component مش هيتغير مهما ضفت settings جديدة
+function SettingsForm({ group, onSave }) {
+  return (
+    <form>
+      {group.settings.map((setting) => {
+        switch (setting.type) {
+          case 'STRING':  return <StringField key={setting.key} setting={setting} />;
+          case 'NUMBER':  return <NumberField key={setting.key} setting={setting} />;
+          case 'BOOLEAN': return <BooleanField key={setting.key} setting={setting} />;
+          case 'SELECT':  return <SelectField key={setting.key} setting={setting} />;
+          case 'JSON':    return <JsonField key={setting.key} setting={setting} />;
+          case 'SECRET':  return <SecretField key={setting.key} setting={setting} />;
+        }
+      })}
+      <Button onClick={onSave}>Save Changes</Button>
+    </form>
+  );
+}
+// إضافة setting type جديد = إضافة case واحدة بس
+```
+ 
