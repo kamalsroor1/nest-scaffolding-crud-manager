@@ -157,24 +157,34 @@ description: "Task list for feature: NestJS + React Project Foundation"
 
 ---
 
-## Phase 6: Polish & Cross-Cutting Concerns
+### Phase 6 — Polish & Cross-Cutting Concerns
 
 **Purpose**: Final wiring, validation, documentation cleanup, and coverage confirmation
 
-- [ ] T058 [P] Create `backend/jest.config.ts` — configure Jest with `ts-jest`, `rootDir: 'src'`, `moduleNameMapper` for `@common/*` etc., `coverageThreshold: { global: { lines: 70, branches: 70 } }`
-- [ ] T059 [P] Create `backend/test/jest-e2e.json` — extend base Jest config; set `testRegex: '.e2e-spec.ts$'`; set `testEnvironment: 'node'`
-- [ ] T060 [P] Add `backend/package.json` scripts: `"start:dev": "nest start --watch"`, `"build": "nest build"`, `"test": "jest"`, `"test:e2e": "jest --config test/jest-e2e.json"`, `"test:cov": "jest --coverage"`, `"lint": "eslint \"{src,test}/**/*.ts\""`, `"format": "prettier --write \"src/**/*.ts\""`
-- [ ] T061 [P] Add `frontend/package.json` scripts: `"dev": "vite"`, `"build": "tsc && vite build"`, `"lint": "eslint src --ext ts,tsx"`, `"format": "prettier --write src"`
-- [ ] T062 Run `pnpm --filter backend test:cov` — confirm coverage ≥ 70%; fix any failing tests or gaps
-- [ ] T063 Run `pnpm --filter backend test:e2e` — confirm all 3 health endpoints pass + rate-limit test passes (requires Docker Compose running)
-- [ ] T064 [P] Run `pnpm lint` from repo root — confirm zero ESLint errors across backend and frontend
-- [ ] T065 [P] Verify `pnpm --filter backend build` succeeds with zero TypeScript errors; verify no `any` types remaining
-- [ ] T066 [P] Run quickstart validation: follow every step in `specs/001-nestjs-react-foundation/quickstart.md` on a clean terminal session; confirm clone-to-running completes in under 5 minutes
-- [ ] T067 Append `history.md` entry at repo root: `## [timestamp] - Feature 001 Implementation Complete` with bullet list of all phases completed
+- [X] T058 [P] Create `backend/jest.config.ts` — configure Jest with `ts-jest`, `rootDir: 'src'`, `moduleNameMapper` for `@common/*` etc., `coverageThreshold: { global: { lines: 70, branches: 70 } }`
+- [X] T059 [P] Create `backend/test/jest-e2e.json` — extend base Jest config; set `testRegex: '.e2e-spec.ts$'`; set `testEnvironment: 'node'`
+- [X] T060 [P] Add `backend/package.json` scripts: `"start:dev": "nest start --watch"`, `"build": "nest build"`, `"test": "jest"`, `"test:e2e": "jest --config test/jest-e2e.json"`, `"test:cov": "jest --coverage"`, `"lint": "eslint \"{src,test}/**/*.ts\""`, `"format": "prettier --write \"src/**/*.ts\""`
+- [X] T061 [P] Add `frontend/package.json` scripts: `"dev": "vite"`, `"build": "tsc && vite build"`, `"lint": "eslint src --ext ts,tsx"`, `"format": "prettier --write src"`
+- [X] T062 Run `pnpm --filter backend test:cov` — confirm coverage ≥ 70%; fix any failing tests or gaps
+- [X] T063 Run `pnpm --filter backend test:e2e` — confirm all 3 health endpoints pass + rate-limit test passes (requires Docker Compose running)
+- [X] T064 [P] Run `pnpm lint` from repo root — confirm zero ESLint errors across backend and frontend
+- [X] T065 [P] Verify `pnpm --filter backend build` succeeds with zero TypeScript errors; verify no `any` types remaining
+- [X] T066 [P] Run quickstart validation: follow every step in `specs/001-nestjs-react-foundation/quickstart.md` on a clean terminal session; confirm clone-to-running completes in under 5 minutes
+- [X] T067 Append `history.md` entry at repo root: `## [timestamp] - Feature 001 Implementation Complete` with bullet list of all phases completed
 
 ---
 
-## Dependencies & Execution Order
+## 🏁 Milestone 1 Reached: Production Foundation Ready
+- [X] Backend modular shell active
+- [X] Frontend dashboard shell active
+- [X] Dockerized developer environment ready
+- [X] Initial Health API & Swagger documented
+- [X] Observability baseline (tracing + unified errors) active
+- [X] 70%+ coverage on core modules
+
+---
+
+## Phase Dependencies & Execution Order
 
 ### Phase Dependencies
 
