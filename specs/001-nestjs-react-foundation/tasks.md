@@ -48,41 +48,41 @@ description: "Task list for feature: NestJS + React Project Foundation"
 
 ### 2A — Backend Scaffold
 
-- [ ] T006 Initialize NestJS 10 project in `backend/` using NestJS CLI: `nest new backend --package-manager pnpm --skip-git`; clean generated boilerplate to match plan.md structure
-- [ ] T007 Configure `backend/tsconfig.json` with `strict: true`, `noImplicitAny: true`, `strictNullChecks: true`, `paths` for `@common/*`, `@config/*`, `@database/*`, `@modules/*`
-- [ ] T008 [P] Install backend dependencies: `pnpm --filter backend add @nestjs/config joi nest-winston winston @nestjs/terminus @nestjs/swagger swagger-ui-express @nestjs/throttler @prisma/client class-validator class-transformer uuid`
-- [ ] T009 [P] Install backend dev dependencies: `pnpm --filter backend add -D prisma @types/uuid jest @types/jest ts-jest supertest @types/supertest`
-- [ ] T010 Create `backend/src/config/app.config.ts` — Joi validation schema for all 8 env variables (NODE_ENV defaults to `'development'`, PORT defaults to 3000, THROTTLE_TTL to 60, THROTTLE_LIMIT to 100); export typed `registerAs('app', ...)` config factory
-- [ ] T011 Create `backend/src/config/config.module.ts` — `ConfigModule.forRoot({ isGlobal: true, validate: joiValidate })` wrapping the schema from T010
-- [ ] T012 [P] Create `backend/src/common/middleware/request-id.middleware.ts` — NestJS middleware that generates `crypto.randomUUID()`, attaches to `req['requestId']`, and sets `X-Request-ID` response header; JSDoc on class and `use()` method
-- [ ] T013 [P] Create `backend/src/common/filters/global-exception.filter.ts` — `@Catch()` filter implementing the error envelope `{ success, statusCode, message, errors[], timestamp, path }`; handle HttpException, Prisma P2002/P2025, ValidationError, and generic Error; include requestId from `req['requestId']`; stack trace only in development
-- [ ] T014 [P] Create `backend/src/common/interceptors/response.interceptor.ts` — `NestInterceptor` wrapping all success responses in `{ success: true, statusCode, message, data, meta: null }` envelope; JSDoc on class and `intercept()` method
-- [ ] T015 [P] Create `backend/src/common/guards/rbac.guard.ts` — `CanActivate` skeleton that always returns `true` for Sprint 1 (no enforcement); add `// TODO Sprint 2: implement resource:action check` comment; JSDoc on class and `canActivate()` method
-- [ ] T016 Create `backend/src/database/prisma.service.ts` — extends `PrismaClient`, implements `OnModuleInit` with `$connect()` and `OnModuleDestroy` with `$disconnect()`; JSDoc on all public methods
-- [ ] T017 Create `backend/src/database/database.module.ts` — `@Global()` module exporting `PrismaService`; import `ConfigModule`
-- [ ] T018 Create `backend/prisma/schema.prisma` — datasource PostgreSQL + generator client + `User` model (`id String @id @default(cuid())`, `email String @unique`, `password String`, `createdAt/updatedAt DateTime`, `deletedAt DateTime?`, `@@map("users")`)
-- [ ] T019 Create `backend/src/app.module.ts` — import `ConfigModule`, `DatabaseModule`, `WinstonModule.forRootAsync(...)`, `ThrottlerModule.forRootAsync(...)`, `HealthModule`; apply `RequestIdMiddleware` for all routes; register `RbacGuard` as global guard via `APP_GUARD`
-- [ ] T020 Create `backend/src/main.ts` — bootstrap in correct order: `setGlobalPrefix('api/v1')`, `useGlobalPipes(ValidationPipe { whitelist, forbidNonWhitelisted, transform })`, `useGlobalFilters(GlobalExceptionFilter)`, `useGlobalInterceptors(ResponseInterceptor)`, `SwaggerModule.setup('api/docs', ...)` with BearerAuth and API metadata, `app.listen(PORT)`
+- [X] T006 Initialize NestJS 10 project in `backend/` using NestJS CLI: `nest new backend --package-manager pnpm --skip-git`; clean generated boilerplate to match plan.md structure
+- [X] T007 Configure `backend/tsconfig.json` with `strict: true`, `noImplicitAny: true`, `strictNullChecks: true`, `paths` for `@common/*`, `@config/*`, `@database/*`, `@modules/*`
+- [X] T008 [P] Install backend dependencies: `pnpm --filter backend add @nestjs/config joi nest-winston winston @nestjs/terminus @nestjs/swagger swagger-ui-express @nestjs/throttler @prisma/client class-validator class-transformer uuid`
+- [X] T009 [P] Install backend dev dependencies: `pnpm --filter backend add -D prisma @types/uuid jest @types/jest ts-jest supertest @types/supertest`
+- [X] T010 Create `backend/src/config/app.config.ts` — Joi validation schema for all 8 env variables (NODE_ENV defaults to `'development'`, PORT defaults to 3000, THROTTLE_TTL to 60, THROTTLE_LIMIT to 100); export typed `registerAs('app', ...)` config factory
+- [X] T011 Create `backend/src/config/config.module.ts` — `ConfigModule.forRoot({ isGlobal: true, validate: joiValidate })` wrapping the schema from T010
+- [X] T012 [P] Create `backend/src/common/middleware/request-id.middleware.ts` — NestJS middleware that generates `crypto.randomUUID()`, attaches to `req['requestId']`, and sets `X-Request-ID` response header; JSDoc on class and `use()` method
+- [X] T013 [P] Create `backend/src/common/filters/global-exception.filter.ts` — `@Catch()` filter implementing the error envelope `{ success, statusCode, message, errors[], timestamp, path }`; handle HttpException, Prisma P2002/P2025, ValidationError, and generic Error; include requestId from `req['requestId']`; stack trace only in development
+- [X] T014 [P] Create `backend/src/common/interceptors/response.interceptor.ts` — `NestInterceptor` wrapping all success responses in `{ success: true, statusCode, message, data, meta: null }` envelope; JSDoc on class and `intercept()` method
+- [X] T015 [P] Create `backend/src/common/guards/rbac.guard.ts` — `CanActivate` skeleton that always returns `true` for Sprint 1 (no enforcement); add `// TODO Sprint 2: implement resource:action check` comment; JSDoc on class and `canActivate()` method
+- [X] T016 Create `backend/src/database/prisma.service.ts` — extends `PrismaClient`, implements `OnModuleInit` with `$connect()` and `OnModuleDestroy` with `$disconnect()`; JSDoc on all public methods
+- [X] T017 Create `backend/src/database/database.module.ts` — `@Global()` module exporting `PrismaService`; import `ConfigModule`
+- [X] T018 Create `backend/prisma/schema.prisma` — datasource PostgreSQL + generator client + `User` model (`id String @id @default(cuid())`, `email String @unique`, `password String`, `createdAt/updatedAt DateTime`, `deletedAt DateTime?`, `@@map("users")`)
+- [X] T019 Create `backend/src/app.module.ts` — import `ConfigModule`, `DatabaseModule`, `WinstonModule.forRootAsync(...)`, `ThrottlerModule.forRootAsync(...)`, `HealthModule`; apply `RequestIdMiddleware` for all routes; register `RbacGuard` as global guard via `APP_GUARD`
+- [X] T020 Create `backend/src/main.ts` — bootstrap in correct order: `setGlobalPrefix('api/v1')`, `useGlobalPipes(ValidationPipe { whitelist, forbidNonWhitelisted, transform })`, `useGlobalFilters(GlobalExceptionFilter)`, `useGlobalInterceptors(ResponseInterceptor)`, `SwaggerModule.setup('api/docs', ...)` with BearerAuth and API metadata, `app.listen(PORT)`
 
 ### 2B — Frontend Scaffold
 
-- [ ] T021 Initialize Vite 5 React TypeScript project in `frontend/` using: `pnpm create vite@5 frontend --template react-ts`; remove boilerplate files (`App.css`, `assets/react.svg`, placeholder content)
-- [ ] T022 [P] Install frontend dependencies: `pnpm --filter frontend add react-router-dom axios @radix-ui/react-slot class-variance-authority clsx tailwind-merge lucide-react`
-- [ ] T023 [P] Install and configure Tailwind CSS 3: `pnpm --filter frontend add -D tailwindcss@3 postcss autoprefixer`; run `npx tailwindcss init -p`; configure `frontend/tailwind.config.ts` with `darkMode: 'class'`, `content: ['./index.html', './src/**/*.{ts,tsx}']`; add Tailwind directives to `frontend/src/index.css`
-- [ ] T024 [P] Install shadcn/ui base components — run `pnpm dlx shadcn-ui@latest init` in `frontend/`; add components: `button`, `card`, `input`, `toast`, `dialog`, `table`; output to `frontend/src/components/ui/`
-- [ ] T025 Create `frontend/src/lib/utils.ts` — export `cn()` helper using `clsx` + `tailwind-merge` (shadcn/ui pattern); JSDoc on function
-- [ ] T026 Create `frontend/src/lib/axios.ts` — single Axios instance with `baseURL: import.meta.env.VITE_API_URL ?? 'http://localhost:3000'`; request interceptor attaches `Bearer ${localStorage.getItem('accessToken')}`; response error interceptor redirects to `/login` on 401; JSDoc on module
-- [ ] T027 Create `frontend/vite.config.ts` — configure `@vitejs/plugin-react`, define `server: { port: 5173, host: true }`, alias `@` → `./src`
+- [X] T021 Initialize Vite 5 React TypeScript project in `frontend/` using: `pnpm create vite@5 frontend --template react-ts`; remove boilerplate files (`App.css`, `assets/react.svg`, placeholder content)
+- [X] T022 [P] Install frontend dependencies: `pnpm --filter frontend add react-router-dom axios @radix-ui/react-slot class-variance-authority clsx tailwind-merge lucide-react`
+- [X] T023 [P] Install and configure Tailwind CSS 3: `pnpm --filter frontend add -D tailwindcss@3 postcss autoprefixer`; run `npx tailwindcss init -p`; configure `frontend/tailwind.config.ts` with `darkMode: 'class'`, `content: ['./index.html', './src/**/*.{ts,tsx}']`; add Tailwind directives to `frontend/src/index.css`
+- [X] T024 [P] Install shadcn/ui base components — run `pnpm dlx shadcn-ui@latest init` in `frontend/`; add components: `button`, `card`, `input`, `toast`, `dialog`, `table`; output to `frontend/src/components/ui/`
+- [X] T025 Create `frontend/src/lib/utils.ts` — export `cn()` helper using `clsx` + `tailwind-merge` (shadcn/ui pattern); JSDoc on function
+- [X] T026 Create `frontend/src/lib/axios.ts` — single Axios instance with `baseURL: import.meta.env.VITE_API_URL ?? 'http://localhost:3000'`; request interceptor attaches `Bearer ${localStorage.getItem('accessToken')}`; response error interceptor redirects to `/login` on 401; JSDoc on module
+- [X] T027 Create `frontend/vite.config.ts` — configure `@vitejs/plugin-react`, define `server: { port: 5173, host: true }`, alias `@` → `./src`
 
 **Checkpoint**: Backend compiles (`pnpm --filter backend build`). Frontend starts (`pnpm --filter frontend dev`).
 
 ### 2C — Docker & Root Config
 
-- [ ] T028 Create `docker-compose.yml` at repo root — 4 services: `postgres` (postgres:16-alpine, healthcheck `pg_isready`, volume `pgdata`), `redis` (redis:7-alpine, healthcheck `redis-cli ping`), `backend` (volume mount `./backend:/app`, `depends_on postgres/redis: condition: service_healthy`, runs `pnpm start:dev`), `frontend` (volume mount `./frontend:/app`, runs `pnpm dev -- --host`)
-- [ ] T029 [P] Create `backend/Dockerfile.dev` — `FROM node:20-alpine`, install pnpm, `WORKDIR /app`, `COPY package.json pnpm-lock.yaml ./`, `RUN pnpm install`, `CMD ["pnpm", "start:dev"]`
-- [ ] T030 [P] Create `frontend/Dockerfile.dev` — same pattern as T029, `CMD ["pnpm", "dev", "--", "--host"]`
-- [ ] T031 [P] Create `docker-compose.prod.yml` at repo root — 3 services: `postgres`, `redis`, `backend` (multi-stage build from `backend/Dockerfile`, runs `pnpm start:prod`)
-- [ ] T032 [P] Create `backend/Dockerfile` (production multi-stage) — Stage 1 `builder`: install deps + `pnpm build`; Stage 2 `runner`: copy `dist/` only, `NODE_ENV=production`, `CMD ["node", "dist/main"]`
+- [X] T028 Create `docker-compose.yml` at repo root — 4 services: `postgres` (postgres:16-alpine, healthcheck `pg_isready`, volume `pgdata`), `redis` (redis:7-alpine, healthcheck `redis-cli ping`), `backend` (volume mount `./backend:/app`, `depends_on postgres/redis: condition: service_healthy`, runs `pnpm start:dev`), `frontend` (volume mount `./frontend:/app`, runs `pnpm dev -- --host`)
+- [X] T029 [P] Create `backend/Dockerfile.dev` — `FROM node:20-alpine`, install pnpm, `WORKDIR /app`, `COPY package.json pnpm-lock.yaml ./`, `RUN pnpm install`, `CMD ["pnpm", "start:dev"]`
+- [X] T030 [P] Create `frontend/Dockerfile.dev` — same pattern as T029, `CMD ["pnpm", "dev", "--", "--host"]`
+- [X] T031 [P] Create `docker-compose.prod.yml` at repo root — 3 services: `postgres`, `redis`, `backend` (multi-stage build from `backend/Dockerfile`, runs `pnpm start:prod`)
+- [X] T032 [P] Create `backend/Dockerfile` (production multi-stage) — Stage 1 `builder`: install deps + `pnpm build`; Stage 2 `runner`: copy `dist/` only, `NODE_ENV=production`, `CMD ["node", "dist/main"]`
 
 **Checkpoint**: `docker-compose up -d` starts all 4 containers without errors.
 
@@ -97,21 +97,21 @@ description: "Task list for feature: NestJS + React Project Foundation"
 
 > Write tests FIRST — verify they FAIL before implementing HealthService
 
-- [ ] T033 [P] [US1] Create `backend/src/database/prisma.service.spec.ts` — unit test: mock PrismaClient; test `onModuleInit` calls `$connect()`; test `onModuleDestroy` calls `$disconnect()`
-- [ ] T034 [P] [US1] Create `backend/src/modules/health/health.service.spec.ts` — unit test: mock `PrismaService.$queryRaw` and Redis TCP check; test `checkDb()` returns `'ok'` on resolve and `'error'` on reject; test `checkRedis()` similarly
+- [X] T033 [P] [US1] Create `backend/src/database/prisma.service.spec.ts` — unit test: mock PrismaClient; test `onModuleInit` calls `$connect()`; test `onModuleDestroy` calls `$disconnect()`
+- [X] T034 [P] [US1] Create `backend/src/modules/health/health.service.spec.ts` — unit test: mock `PrismaService.$queryRaw` and Redis TCP check; test `checkDb()` returns `'ok'` on resolve and `'error'` on reject; test `checkRedis()` similarly
 
 ### E2E Tests for User Story 1
 
-- [ ] T035 [P] [US1] Create `backend/test/health.e2e-spec.ts` — using Supertest + NestJS `TestingModule`; test `GET /api/v1/health` → 200, success envelope, `data.status === 'ok'`; test `GET /api/v1/health/db` → 200, envelope present; test `GET /api/v1/health/redis` → 200, envelope present; test rate-limit `GET /api/v1/health` 101 times → last response 429 error envelope
+- [X] T035 [P] [US1] Create `backend/test/health.e2e-spec.ts` — using Supertest + NestJS `TestingModule`; test `GET /api/v1/health` → 200, success envelope, `data.status === 'ok'`; test `GET /api/v1/health/db` → 200, envelope present; test `GET /api/v1/health/redis` → 200, envelope present; test rate-limit `GET /api/v1/health` 101 times → last response 429 error envelope
 
 ### Implementation for User Story 1
 
-- [ ] T036 [US1] Create `backend/src/modules/health/health.service.ts` — `HealthService` with three public methods: `checkAll()`, `checkDb()` (calls `prisma.$queryRaw\`SELECT 1\``), `checkRedis()` (TCP ping via `net.createConnection` to Redis host:port); inject `PrismaService` and `ConfigService`; JSDoc on class and all methods; returns `HealthStatusDto` shape
-- [ ] T037 [US1] Create `backend/src/modules/health/health.controller.ts` — `@Controller('health')`; three handlers `GET /`, `GET /db`, `GET /redis`; `@ApiTags('Health')`, `@ApiOperation(...)`, `@ApiResponse({ status: 200, type: HealthStatusDto })` on each; `@SkipThrottle()` NOT applied (rate limit stays active); inject `HealthService`; JSDoc on class and handlers
-- [ ] T038 [US1] Create `backend/src/modules/health/health.module.ts` — import `DatabaseModule`; provide `HealthService`; declare `HealthController`
-- [ ] T039 [US1] Configure Winston logger in `backend/src/app.module.ts` — `WinstonModule.forRootAsync` using `ConfigService`; development: `printf` format with `[timestamp] [LEVEL] [requestId] message`; production: `json()` format + file transports to `logs/error.log` and `logs/combined.log`; suppress output in `test` env
-- [ ] T040 [US1] Configure Swagger in `backend/src/main.ts` — `DocumentBuilder` with title `'NestJS Scaffolding Dashboard API'`, version `'1.0'`, description, `addBearerAuth()`; `SwaggerModule.createDocument(app, config)`; `SwaggerModule.setup('api/docs', app, document, { swaggerOptions: { persistAuthorization: true } })`
-- [ ] T041 [US1] Run `pnpm --filter backend prisma migrate dev --name init` — verify migration file created in `backend/prisma/migrations/`; commit migration file
+- [X] T036 [US1] Create `backend/src/modules/health/health.service.ts` — `HealthService` with three public methods: `checkAll()`, `checkDb()` (calls `prisma.$queryRaw\`SELECT 1\``), `checkRedis()` (TCP ping via `net.createConnection` to Redis host:port); inject `PrismaService` and `ConfigService`; JSDoc on class and all methods; returns `HealthStatusDto` shape
+- [X] T037 [US1] Create `backend/src/modules/health/health.controller.ts` — `@Controller('health')`; three handlers `GET /`, `GET /db`, `GET /redis`; `@ApiTags('Health')`, `@ApiOperation(...)`, `@ApiResponse({ status: 200, type: HealthStatusDto })` on each; `@SkipThrottle()` NOT applied (rate limit stays active); inject `HealthService`; JSDoc on class and handlers
+- [X] T038 [US1] Create `backend/src/modules/health/health.module.ts` — import `DatabaseModule`; provide `HealthService`; declare `HealthController`
+- [X] T039 [US1] Configure Winston logger in `backend/src/app.module.ts` — `WinstonModule.forRootAsync` using `ConfigService`; development: `printf` format with `[timestamp] [LEVEL] [requestId] message`; production: `json()` format + file transports to `logs/error.log` and `logs/combined.log`; suppress output in `test` env
+- [X] T040 [US1] Configure Swagger in `backend/src/main.ts` — `DocumentBuilder` with title `'NestJS Scaffolding Dashboard API'`, version `'1.0'`, description, `addBearerAuth()`; `SwaggerModule.createDocument(app, config)`; `SwaggerModule.setup('api/docs', app, document, { swaggerOptions: { persistAuthorization: true } })`
+- [X] T041 [US1] Run `pnpm --filter backend prisma migrate dev --name init` — verify migration file created in `backend/prisma/migrations/`; commit migration file
 
 **Checkpoint**: `curl http://localhost:3000/api/v1/health` returns full success envelope. Swagger UI at `/api/docs` shows Health tag with 3 endpoints.
 
@@ -124,18 +124,18 @@ description: "Task list for feature: NestJS + React Project Foundation"
 
 ### Implementation for User Story 2
 
-- [ ] T042 [P] [US2] Create `frontend/src/hooks/useTheme.ts` — React hook reading `localStorage.getItem('theme')`; toggles `document.documentElement.classList.toggle('dark', isDark)`; persists to localStorage; exports `{ isDark, toggleTheme }`; JSDoc on hook and return type
-- [ ] T043 [P] [US2] Create `frontend/src/hooks/useToast.ts` — thin wrapper around shadcn/ui toast hook; exports `{ toast }` with helper methods `toast.success(msg)`, `toast.error(msg)`; JSDoc
-- [ ] T044 [US2] Create `frontend/src/components/ProtectedRoute.tsx` — checks `localStorage.getItem('accessToken')`; if absent renders `<Navigate to="/login" replace />`; if present renders `<Outlet />`; JSDoc on component
-- [ ] T045 [US2] Create `frontend/src/components/LoadingSpinner.tsx` — Tailwind-animated spinner SVG component; accepts optional `size` and `className` props; JSDoc on component and props
-- [ ] T046 [P] [US2] Create `frontend/src/components/layout/Sidebar.tsx` — collapsible sidebar with nav links placeholder (`Dashboard`); uses shadcn/ui primitives; accepts `collapsed: boolean` and `onToggle: () => void` props; uses Lucide icons; JSDoc
-- [ ] T047 [P] [US2] Create `frontend/src/components/layout/Header.tsx` — top header with: dark mode toggle button (calls `toggleTheme` from `useTheme`), user menu placeholder (avatar + dropdown); JSDoc on component and props
-- [ ] T048 [US2] Create `frontend/src/components/layout/AppLayout.tsx` — compose `Sidebar` + `Header` + `<main>` content area; manage `sidebarCollapsed` state; apply `dark` class from `useTheme`; render `<Outlet />` in main; JSDoc
-- [ ] T049 [US2] Create `frontend/src/pages/LoginPage.tsx` — login form using shadcn/ui `Card`, `Input`, `Button`; form state with `useState`; on submit calls Axios POST (placeholder endpoint); on error shows `toast.error`; on success stores token in localStorage and navigates to `/dashboard`; JSDoc
-- [ ] T050 [US2] Create `frontend/src/pages/DashboardPage.tsx` — placeholder page rendered inside `AppLayout`; displays welcome heading and `LoadingSpinner` (to verify component renders); JSDoc
-- [ ] T051 [US2] Create `frontend/src/App.tsx` — React Router v6 `<BrowserRouter>` with routes: `/ → navigate to /dashboard`, `/login → LoginPage`, `/dashboard → ProtectedRoute → AppLayout → DashboardPage`; wrap app with shadcn/ui `<Toaster />`; JSDoc
-- [ ] T052 [US2] Update `frontend/src/main.tsx` — wrap `<App />` with `<React.StrictMode>`; import `./index.css`; JSDoc on module
-- [ ] T053 [US2] Update `frontend/index.html` — set `<title>NestJS Scaffolding Dashboard</title>`; meta description; meta viewport; favicon placeholder link
+- [X] T042 [P] [US2] Create `frontend/src/hooks/useTheme.ts` — React hook reading `localStorage.getItem('theme')`; toggles `document.documentElement.classList.toggle('dark', isDark)`; persists to localStorage; exports `{ isDark, toggleTheme }`; JSDoc on hook and return type
+- [X] T043 [P] [US2] Create `frontend/src/hooks/useToast.ts` — thin wrapper around shadcn/ui toast hook; exports `{ toast }` with helper methods `toast.success(msg)`, `toast.error(msg)`; JSDoc
+- [X] T044 [US2] Create `frontend/src/components/ProtectedRoute.tsx` — checks `localStorage.getItem('accessToken')`; if absent renders `<Navigate to="/login" replace />`; if present renders `<Outlet />`; JSDoc on component
+- [X] T045 [US2] Create `frontend/src/components/LoadingSpinner.tsx` — Tailwind-animated spinner SVG component; accepts optional `size` and `className` props; JSDoc on component and props
+- [X] T046 [P] [US2] Create `frontend/src/components/layout/Sidebar.tsx` — collapsible sidebar with nav links placeholder (`Dashboard`); uses shadcn/ui primitives; accepts `collapsed: boolean` and `onToggle: () => void` props; uses Lucide icons; JSDoc
+- [X] T047 [P] [US2] Create `frontend/src/components/layout/Header.tsx` — top header with: dark mode toggle button (calls `toggleTheme` from `useTheme`), user menu placeholder (avatar + dropdown); JSDoc on component and props
+- [X] T048 [US2] Create `frontend/src/components/layout/AppLayout.tsx` — compose `Sidebar` + `Header` + `<main>` content area; manage `sidebarCollapsed` state; apply `dark` class from `useTheme`; render `<Outlet />` in main; JSDoc
+- [X] T049 [US2] Create `frontend/src/pages/LoginPage.tsx` — login form using shadcn/ui `Card`, `Input`, `Button`; form state with `useState`; on submit calls Axios POST (placeholder endpoint); on error shows `toast.error`; on success stores token in localStorage and navigates to `/dashboard`; JSDoc
+- [X] T050 [US2] Create `frontend/src/pages/DashboardPage.tsx` — placeholder page rendered inside `AppLayout`; displays welcome heading and `LoadingSpinner` (to verify component renders); JSDoc
+- [X] T051 [US2] Create `frontend/src/App.tsx` — React Router v6 `<BrowserRouter>` with routes: `/ → navigate to /dashboard`, `/login → LoginPage`, `/dashboard → ProtectedRoute → AppLayout → DashboardPage`; wrap app with shadcn/ui `<Toaster />`; JSDoc
+- [X] T052 [US2] Update `frontend/src/main.tsx` — wrap `<App />` with `<React.StrictMode>`; import `./index.css`; JSDoc on module
+- [X] T053 [US2] Update `frontend/index.html` — set `<title>NestJS Scaffolding Dashboard</title>`; meta description; meta viewport; favicon placeholder link
 
 **Checkpoint**: `pnpm --filter frontend dev` starts. Visit `/login` → form renders. Set mock token → `/dashboard` → layout renders with sidebar and header. Toggle dark mode → refresh → persists.
 
